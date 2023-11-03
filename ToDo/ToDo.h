@@ -28,4 +28,5 @@ private:
     QLineEdit* name;
     QPushButton* doneButton;
     QListWidget* listWidget;
+    QListWidget* completedTasks;
 };

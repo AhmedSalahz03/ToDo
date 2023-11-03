@@ -1,4 +1,4 @@
-// Task.h
+
 
 #ifndef TASK_H
 #define TASK_H
@@ -16,5 +16,5 @@ public:
     void setDone(bool);
 };
 
-#endif // TASK_H
+#endif
 
