@@ -59,7 +59,8 @@ void ToDo::createTask() {
 
     std::string taskName = name->text().toStdString();
     Task newTask(taskName);
-    tasks.push_back(newTask);
+    tasks.insert(1, taskName);
+   // tasks.push_back(newTask);
     name->clear();
     updateUI();
 
@@ -68,7 +69,8 @@ void ToDo::createTask() {
 }
 
 void ToDo::updateUI() {
-
+    tasks.updateUI(listWidget);
+    /*
     listWidget->clear();
     completedTasks->clear();
 
@@ -102,5 +104,6 @@ void ToDo::updateUI() {
                 });
         }
     }
+    */
 }
 

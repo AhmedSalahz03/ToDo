@@ -7,6 +7,7 @@
 #include <QListWidget>
 #include "ui_ToDo.h"
 #include "Task.h"
+#include "Hashmap.h"
 
 class ToDo : public QMainWindow
 {
@@ -24,7 +25,8 @@ private:
     void updateUI();
 
     Ui::ToDoClass ui;
-    std::vector<Task> tasks;
+    // std::vector<Task> tasks;
+    HashMap tasks;
     QLineEdit* name;
     QPushButton* doneButton;
     QListWidget* listWidget;
