@@ -48,8 +48,10 @@
     <ClInclude Include="Task.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hashmap.h">
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Hashmap.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </QtMoc>
   </ItemGroup>
 </Project>

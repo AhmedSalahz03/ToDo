@@ -9,10 +9,12 @@ using namespace std;
 #include "ToDo.h"
 #include <QPushButton>
 #include <QLabel>
-#include <qcheckbox.h>
 #include <QObject>
 #include <QListWidget>
 #include <QCheckBox>
+#include <QColor>
+
+class ToDo;
 
 class LinkedListNode {
 private:
@@ -45,7 +47,8 @@ public:
 
 };
 
-class HashMap {
+class HashMap : public QObject {
+    Q_OBJECT
 private:
     static const int hashGroups = 150000;    // max size an int can carry 2147483647
     LinkedListNode** table;
@@ -142,24 +145,121 @@ public:
   }
 
 }
- void updateUI(QListWidget* listWidget) {
-     listWidget->clear();
+ void display(QListWidget* allTasks, ToDo &todoInstance, QListWidget* completeTasks, QListWidget* incompleteTasks, QListWidget* testWidget) {
+     allTasks->clear();
+     completeTasks->clear();
+     incompleteTasks->clear();
      
+     QColor red = QColor(Qt::red);
+     QColor darkerRed = QColor(180, 0, 0);
+     for (int j = 0; j < 5; j++) {
+         for (int i = 0; i < hashGroups; i++) {
+             LinkedListNode* head = table[i];
 
+             while (head != nullptr) {
+                 if (head->priority == j) {
+                     QListWidgetItem* item = new QListWidgetItem(allTasks);
+                     item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + QString::number(head->priority));
+                     if (head->priority == 1) {
+                         item->setForeground(darkerRed);
+                     }
+                     else if (head->priority == 2) {
+                         item->setForeground(red);
+                     }
+                     QCheckBox* checkBox = new QCheckBox(allTasks);
+                     checkBox->setChecked(head->status);
+                     allTasks->setItemWidget(item, checkBox);
+                     //QObject::connect(checkBox, &QCheckBox::clicked, &todoInstance, &ToDo::updateUI);
+                     QObject::connect(checkBox, &QCheckBox::stateChanged, &todoInstance, &ToDo::updateUI);
+                     QObject::connect(checkBox, SIGNAL(clicked()), &todoInstance, SLOT(updateUI()));
+                     connect(checkBox, &QCheckBox::stateChanged, [head](int state) {
+                         head->status = (state == Qt::Checked);
+                         });
+                 }
+                 head = head->next;
+             }
+         }
+     }
      for (int j = 5; j > 0; j--) {
          for (int i = 0; i < hashGroups; i++) {
              LinkedListNode* head = table[i];
 
              while (head != nullptr) {
                  if (head->priority == j) {
-                     QListWidgetItem* item = new QListWidgetItem(listWidget);
-                     item->setText(QString::fromStdString(head->value));
+                     if (head->status == true) {
+                         QListWidgetItem* item = new QListWidgetItem(completeTasks);
+                         item->setText("    " + QString::fromStdString(head->value));
+                         item->setForeground(Qt::gray);
+                         QCheckBox* checkBox = new QCheckBox(completeTasks);
+                         checkBox->setChecked(head->status);
+                         completeTasks->setItemWidget(item, checkBox);
+                         //QObject::connect(checkBox, &QCheckBox::clicked, &todoInstance, &ToDo::updateUI);
+                         QObject::connect(checkBox, &QCheckBox::stateChanged, &todoInstance, &ToDo::updateUI);
+                         QObject::connect(checkBox, SIGNAL(clicked()), &todoInstance, SLOT(updateUI()));
+                         connect(checkBox, &QCheckBox::stateChanged, [head](int state) {
+                             head->status = (state == Qt::Checked);
+                             });
+                     }
+                 }
+                 head = head->next;
+             }
+         }
+     }
+     
+     for (int j = 5; j > 0; j--) {
+         for (int i = 0; i < hashGroups; i++) {
+             LinkedListNode* head = table[i];
 
-                     QCheckBox* checkBox = new QCheckBox(listWidget);
+             while (head != nullptr) {
+                 if (head->priority == j) {
+                     if (head->status == false) {
+                         QListWidgetItem* item = new QListWidgetItem(incompleteTasks);
+                         item->setText("    " + QString::fromStdString(head->value));
+
+                         QCheckBox* checkBox = new QCheckBox(incompleteTasks);
+                         checkBox->setChecked(head->status);
+                         incompleteTasks->setItemWidget(item, checkBox);
+                         //QObject::connect(checkBox, &QCheckBox::clicked, &todoInstance, &ToDo::updateUI);
+                         QObject::connect(checkBox, &QCheckBox::stateChanged, &todoInstance, &ToDo::updateUI);
+                         QObject::connect(checkBox, SIGNAL(clicked()), &todoInstance, SLOT(updateUI()));
+                         connect(checkBox, &QCheckBox::stateChanged, [head](int state) {
+                             head->status = (state == Qt::Checked);
+                             });
+                     }
+                 }
+                 head = head->next;
+             }
+         }
+     }
+     for (int j = 0; j < 5; j++) {
+         for (int i = 0; i < hashGroups; i++) {
+             LinkedListNode* head = table[i];
+
+             while (head != nullptr) {
+                 if (head->priority == j) {
+                     QListWidgetItem* item = new QListWidgetItem(testWidget);
+
+                     QWidget* widget = new QWidget();
+                     QHBoxLayout* layout = new QHBoxLayout(widget);
+
+                     QCheckBox* checkBox = new QCheckBox();
                      checkBox->setChecked(head->status);
-                     listWidget->setItemWidget(item, checkBox);
+                     layout->addWidget(checkBox);
 
-                     
+                     QLabel* label = new QLabel(QString::fromStdString(head->value));
+                     label->setFixedWidth(250); // Set a fixed width for the label
+                     label->setFixedHeight(300);
+                     layout->addWidget(label);
+
+                     QLabel* priorityLabel = new QLabel("Priority: " + QString::number(head->priority));
+                     priorityLabel->setFixedWidth(150); // Set a fixed width for the priority label
+                     priorityLabel->setFixedHeight(200);
+                     layout->addWidget(priorityLabel);
+
+                     widget->setLayout(layout);
+                     testWidget->setItemWidget(item, widget);
+
+
                  }
                  head = head->next;
              }
