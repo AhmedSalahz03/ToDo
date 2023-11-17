@@ -240,20 +240,20 @@ public:
                      QListWidgetItem* item = new QListWidgetItem(testWidget);
 
                      QWidget* widget = new QWidget();
-                     QHBoxLayout* layout = new QHBoxLayout(widget);
+                     QVBoxLayout* layout = new QVBoxLayout(widget); // Change to QVBoxLayout for vertical alignment
 
                      QCheckBox* checkBox = new QCheckBox();
                      checkBox->setChecked(head->status);
                      layout->addWidget(checkBox);
 
                      QLabel* label = new QLabel(QString::fromStdString(head->value));
-                     label->setFixedWidth(250); // Set a fixed width for the label
-                     label->setFixedHeight(300);
+                     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum); // Expanding width, minimum height
+                     label->setMinimumHeight(label->sizeHint().height()); // Set minimum height based on size hint
                      layout->addWidget(label);
 
                      QLabel* priorityLabel = new QLabel("Priority: " + QString::number(head->priority));
-                     priorityLabel->setFixedWidth(150); // Set a fixed width for the priority label
-                     priorityLabel->setFixedHeight(200);
+                     priorityLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum); // Fixed width, minimum height
+                     priorityLabel->setMinimumHeight(priorityLabel->sizeHint().height()); // Set minimum height based on size hint
                      layout->addWidget(priorityLabel);
 
                      widget->setLayout(layout);
