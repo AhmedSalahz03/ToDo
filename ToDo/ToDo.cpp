@@ -82,7 +82,7 @@ ToDo::ToDo(QWidget* parent)
     name->show();
 
     doneButton = new QPushButton(this);
-    doneButton->setText("Add");
+    doneButton->setText("Add Task");
     doneButton->move(620, 100);
     doneButton->resize(120, 40);
 

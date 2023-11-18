@@ -92,6 +92,7 @@
     <QtRcc Include="ToDo.qrc" />
     <QtUic Include="ToDo.ui" />
     <QtMoc Include="ToDo.h" />
+    <ClCompile Include="Hashmap.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="ToDo.cpp" />
     <ClCompile Include="main.cpp" />
