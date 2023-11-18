@@ -22,7 +22,7 @@ public slots:
     void addNewTask();
     void createTask();
     void updateUI();
-    void deleteTask(QListWidgetItem* selectedItem);
+    void deleteTask();
 private:
     
 

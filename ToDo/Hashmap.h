@@ -237,27 +237,13 @@ public:
 
              while (head != nullptr) {
                  if (head->priority == j) {
-                     QListWidgetItem* item = new QListWidgetItem(testWidget);
-
-                     QWidget* widget = new QWidget();
-                     QVBoxLayout* layout = new QVBoxLayout(widget); // Change to QVBoxLayout for vertical alignment
+                     QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(head->value));
+                     testWidget->addItem(item);
 
                      QCheckBox* checkBox = new QCheckBox();
                      checkBox->setChecked(head->status);
-                     layout->addWidget(checkBox);
 
-                     QLabel* label = new QLabel(QString::fromStdString(head->value));
-                     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum); // Expanding width, minimum height
-                     label->setMinimumHeight(label->sizeHint().height()); // Set minimum height based on size hint
-                     layout->addWidget(label);
-
-                     QLabel* priorityLabel = new QLabel("Priority: " + QString::number(head->priority));
-                     priorityLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum); // Fixed width, minimum height
-                     priorityLabel->setMinimumHeight(priorityLabel->sizeHint().height()); // Set minimum height based on size hint
-                     layout->addWidget(priorityLabel);
-
-                     widget->setLayout(layout);
-                     testWidget->setItemWidget(item, widget);
+                     testWidget->setItemWidget(item, checkBox);
 
 
                  }

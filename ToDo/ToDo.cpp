@@ -15,7 +15,7 @@ ToDo::ToDo(QWidget* parent)
 
     QPushButton* addNewTaskBtn = new QPushButton(this);
     addNewTaskBtn->setText("Add New Task");
-    addNewTaskBtn->move(300, 100);
+    addNewTaskBtn->move(300, 50);
     addNewTaskBtn->resize(250, 30);
 
     QLabel* allTasksLabel = new QLabel(this);
@@ -51,7 +51,7 @@ ToDo::ToDo(QWidget* parent)
     allTasks->move(100, 300);
     allTasks->resize(300, 450);
 
-    QListWidgetItem* selectedItem = allTasks->currentItem();
+    
     
 
     completeTasks = new QListWidget(this);
@@ -68,12 +68,11 @@ ToDo::ToDo(QWidget* parent)
 
     deleteBtn = new QPushButton(this);
     deleteBtn->setText("Delete Task");
-    deleteBtn->move(850, 200);
+    deleteBtn->move(850, 100);
 
     //connect(deleteBtn, &QPushButton::clicked, this, &ToDo::deleteTask(headValue));
     connect(deleteBtn, &QPushButton::clicked, [=]() {
-        //Call the ToDo::deleteTask() function with the 'headValue' parameter
-        deleteTask(selectedItem);
+        deleteTask();
         });
 }
 
@@ -83,17 +82,17 @@ ToDo::~ToDo()
 void ToDo::addNewTask() {
 
     name = new QLineEdit(this);
-    name->move(300, 150);
+    name->move(300, 100);
     name->resize(250, 40);
     name->show();
 
     doneButton = new QPushButton(this);
     doneButton->setText("Add");
-    doneButton->move(375, 200); 
+    doneButton->move(375, 150); 
     doneButton->resize(100, 50);
 
     priority = new QComboBox(this);
-    priority->move(500, 200);
+    priority->move(500, 40);
     priority->setPlaceholderText("Priority");
     priority->addItem("1");
     priority->addItem("2");
@@ -160,26 +159,45 @@ void ToDo::updateUI() {
     }
     */
 }
-void ToDo::deleteTask(QListWidgetItem* selectedItem) {
-    if (!selectedItem) {
+void ToDo::deleteTask() {
+    QListWidgetItem* selectedItemAll = allTasks->currentItem();
+    QListWidgetItem* selectedItemComp = completeTasks->currentItem();
+    QListWidgetItem* selectedItemIncomp = incompleteTasks->currentItem();
+    if (!selectedItemAll && !selectedItemComp && !selectedItemIncomp ) {
         qDebug() << "No selected item!";
         return;
     }
+    
 
-    QString itemText = selectedItem->text();
-    QStringList parts = itemText.split("    Priorty: ");
-    if (parts.size() < 1) {
-        qDebug() << "Separator not found or unexpected format!";
-        return;
+
+    if (selectedItemAll) {
+        QString itemText = selectedItemAll->text();
+        QStringList list = itemText.split("    Priorty: ");
+        QString value = list[0].trimmed();
+
+        std::string str = value.toStdString();
+        tasks->deleteItem(str);
+        updateUI();
     }
+    else if (selectedItemComp) {
+        QString itemText = selectedItemComp->text();
+        QStringList list = itemText.split("    Priorty: ");
+        QString value = list[0].trimmed();
 
-    QString headValue = parts[0].trimmed();
-    std::string str = headValue.toStdString();
-    qDebug() << "Deleting string: " << str.c_str(); // Output for debugging
+        std::string str = value.toStdString();
+        tasks->deleteItem(str);
+        updateUI();
+    }
+    else if (selectedItemIncomp) {
+        QString itemText = selectedItemIncomp->text();
+        QStringList list = itemText.split("    Priorty: ");
+        QString value = list[0].trimmed();
 
-    tasks->deleteItem(str);
-    updateUI();
-    // Proceed with tasks->deleteItem(str) and handle any potential errors there
+        std::string str = value.toStdString();
+        tasks->deleteItem(str);
+        updateUI();
+    }
+    
 }
 
 
