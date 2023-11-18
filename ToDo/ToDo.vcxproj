@@ -100,6 +100,9 @@
     <QtMoc Include="Hashmap.h" />
     <ClInclude Include="Task.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="stylesheet.qss" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

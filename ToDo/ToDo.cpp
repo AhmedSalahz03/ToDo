@@ -7,21 +7,26 @@
 #include <qcombobox.h>
 #include <QString>
 #include <string>
+#include <QFile>
 
 ToDo::ToDo(QWidget* parent)
     : QMainWindow(parent), tasks(new HashMap())
 {
     ui.setupUi(this);
-
-    QPushButton* addNewTaskBtn = new QPushButton(this);
-    addNewTaskBtn->setText("Add New Task");
-    addNewTaskBtn->move(300, 50);
-    addNewTaskBtn->resize(250, 30);
+    QLabel* title = new QLabel(this);
+    title->setText("ToDo");
+    title->resize(150, 60);
+    title->move(500, 20);
+    QFont fontTitle = title->font();
+    fontTitle.setPointSize(30);
+    fontTitle.setBold(true);
+    title->setFont(fontTitle);
 
     QLabel* allTasksLabel = new QLabel(this);
     allTasksLabel->setText("All Tasks");
     allTasksLabel->resize(150, 20);
     allTasksLabel->move(100, 270);
+
     QFont font = allTasksLabel->font();
     font.setPointSize(15);
     font.setBold(true);
@@ -45,14 +50,11 @@ ToDo::ToDo(QWidget* parent)
     font.setBold(true);
     incompleteTasksLabel->setFont(font);
     
-    connect(addNewTaskBtn, SIGNAL(clicked()), this, SLOT(addNewTask()));
+   
 
     allTasks = new QListWidget(this);
     allTasks->move(100, 300);
     allTasks->resize(300, 450);
-
-    
-    
 
     completeTasks = new QListWidget(this);
     completeTasks->move(800, 300);
@@ -62,37 +64,31 @@ ToDo::ToDo(QWidget* parent)
     incompleteTasks->move(450, 300);
     incompleteTasks->resize(300, 450);
 
-    testWidget = new QListWidget(this);
-    testWidget->move(1200, 300);
-    testWidget->resize(300, 450);
+
 
     deleteBtn = new QPushButton(this);
     deleteBtn->setText("Delete Task");
-    deleteBtn->move(850, 100);
+    deleteBtn->move(100, 200);
+    deleteBtn->resize(120,40);
 
-    //connect(deleteBtn, &QPushButton::clicked, this, &ToDo::deleteTask(headValue));
     connect(deleteBtn, &QPushButton::clicked, [=]() {
         deleteTask();
         });
-}
-
-ToDo::~ToDo()
-{}
-
-void ToDo::addNewTask() {
 
     name = new QLineEdit(this);
-    name->move(300, 100);
-    name->resize(250, 40);
+    name->setPlaceholderText("Add a Todo");
+    name->move(100, 100);
+    name->resize(350, 40);
     name->show();
 
     doneButton = new QPushButton(this);
     doneButton->setText("Add");
-    doneButton->move(375, 150); 
-    doneButton->resize(100, 50);
+    doneButton->move(620, 100);
+    doneButton->resize(120, 40);
 
     priority = new QComboBox(this);
-    priority->move(500, 40);
+    priority->move(470, 100);
+    priority->resize(100, 40);
     priority->setPlaceholderText("Priority");
     priority->addItem("1");
     priority->addItem("2");
@@ -101,28 +97,38 @@ void ToDo::addNewTask() {
     priority->addItem("5");
 
     connect(doneButton, SIGNAL(clicked()), this, SLOT(createTask()));
-
+    
     doneButton->show();
     priority->show();
+
+   QFile styleFile("stylesheet.qss"); 
+   if (styleFile.open(QFile::ReadOnly | QFile::Text)) {
+        QString styleSheet = QLatin1String(styleFile.readAll());
+        allTasks->setStyleSheet(styleSheet);
+        completeTasks->setStyleSheet(styleSheet);
+        incompleteTasks->setStyleSheet(styleSheet);
+        doneButton->setStyleSheet(styleSheet);
+        deleteBtn->setStyleSheet(styleSheet);
+        styleFile.close();
+   }   
 }
+
+ToDo::~ToDo()
+{}
+
+
 
 void ToDo::createTask() {
     int selectedPriority = priority->currentIndex() + 1;
     std::string taskName = name->text().toStdString();
     Task newTask(taskName);
     tasks->insert(selectedPriority, taskName);
-    // tasks.push_back(newTask);
     name->clear();
     updateUI();
-
-    delete name;  
-    delete doneButton;  
-    delete priority;
-
 }
 
 void ToDo::updateUI() {
-    tasks->display(allTasks, *this, completeTasks, incompleteTasks, testWidget);
+    tasks->display(allTasks, *this, completeTasks, incompleteTasks);
     /*
     listWidget->clear();
     completedTasks->clear();
@@ -163,13 +169,12 @@ void ToDo::deleteTask() {
     QListWidgetItem* selectedItemAll = allTasks->currentItem();
     QListWidgetItem* selectedItemComp = completeTasks->currentItem();
     QListWidgetItem* selectedItemIncomp = incompleteTasks->currentItem();
+
     if (!selectedItemAll && !selectedItemComp && !selectedItemIncomp ) {
         qDebug() << "No selected item!";
         return;
     }
-    
-
-
+  
     if (selectedItemAll) {
         QString itemText = selectedItemAll->text();
         QStringList list = itemText.split("    Priorty: ");
@@ -199,5 +204,9 @@ void ToDo::deleteTask() {
     }
     
 }
+
+
+
+
 
 

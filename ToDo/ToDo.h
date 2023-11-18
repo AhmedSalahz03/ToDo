@@ -7,6 +7,8 @@
 #include <QListWidget>
 #include "ui_ToDo.h"
 #include "Task.h"
+#include "qcombobox.h"
+
 
 class HashMap;
 
@@ -19,16 +21,16 @@ public:
     ~ToDo();
 
 public slots:
-    void addNewTask();
+    
     void createTask();
     void updateUI();
     void deleteTask();
+  
+    
 private:
     
 
     Ui::ToDoClass ui;
-    // std::vector<Task> tasks;
-    //HashMap tasks;
     HashMap* tasks;
     QLineEdit* name;
     QPushButton* doneButton;
@@ -37,5 +39,5 @@ private:
     QListWidget* allTasks;
     QListWidget* completeTasks;
     QListWidget* incompleteTasks;
-    QListWidget* testWidget;
+    
 };

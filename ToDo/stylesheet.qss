@@ -1,0 +1,31 @@
+
+QListWidget {
+    background-color: #f0f0f0; /* Set the background color */
+    border: 1px solid #ccc;    /* Add a border */
+    border-radius: 5px;       /* Set border radius for rounded corners */
+    color: #000000;            /* Set text color for the widget */
+}
+
+QListWidget::item {
+    padding: 5px;              /* Add padding to each item */
+    background-color: #ffffff; /* Set item background color */
+    border-radius: 4.5px;
+    color: #000000;           /* Set text color for items */
+}
+
+QListWidget::item:selected {
+    background-color: #d5f7ea; /* Set background color for selected items */
+    color: #000000;            /* Set text color for selected items */
+}
+QPushButton {
+    background-color: #0078d7; /* Set the background color */
+    border: 1px solid #0078d7; /* Set the border color */
+    color: #ffffff; /* Set the text color */
+    padding: 8px 16px; /* Set padding (top/bottom, left/right) */
+    border-radius: 5px; /* Set border radius for rounded corners */
+}
+
+QPushButton:hover {
+    background-color: #0056b3; /* Set the background color on hover */
+    border: 1px solid #0056b3; /* Set the border color on hover */
+}

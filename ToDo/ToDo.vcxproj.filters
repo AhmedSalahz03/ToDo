@@ -54,4 +54,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="stylesheet.qss">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

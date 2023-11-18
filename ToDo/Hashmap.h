@@ -145,14 +145,15 @@ public:
   }
 
 }
- void display(QListWidget* allTasks, ToDo &todoInstance, QListWidget* completeTasks, QListWidget* incompleteTasks, QListWidget* testWidget) {
+ void display(QListWidget* allTasks, ToDo &todoInstance, QListWidget* completeTasks, QListWidget* incompleteTasks) {
      allTasks->clear();
      completeTasks->clear();
      incompleteTasks->clear();
      
      QColor red = QColor(Qt::red);
      QColor darkerRed = QColor(180, 0, 0);
-     for (int j = 0; j < 5; j++) {
+     QColor gray = QColor(Qt::gray);
+     for (int j = 5; j > 0; j--) {
          for (int i = 0; i < hashGroups; i++) {
              LinkedListNode* head = table[i];
 
@@ -165,6 +166,9 @@ public:
                      }
                      else if (head->priority == 2) {
                          item->setForeground(red);
+                     }
+                     if (head->status == true) {
+                         item->setForeground(gray);
                      }
                      QCheckBox* checkBox = new QCheckBox(allTasks);
                      checkBox->setChecked(head->status);
@@ -188,12 +192,11 @@ public:
                  if (head->priority == j) {
                      if (head->status == true) {
                          QListWidgetItem* item = new QListWidgetItem(completeTasks);
-                         item->setText("    " + QString::fromStdString(head->value));
+                         item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + QString::number(head->priority));
                          item->setForeground(Qt::gray);
                          QCheckBox* checkBox = new QCheckBox(completeTasks);
                          checkBox->setChecked(head->status);
                          completeTasks->setItemWidget(item, checkBox);
-                         //QObject::connect(checkBox, &QCheckBox::clicked, &todoInstance, &ToDo::updateUI);
                          QObject::connect(checkBox, &QCheckBox::stateChanged, &todoInstance, &ToDo::updateUI);
                          QObject::connect(checkBox, SIGNAL(clicked()), &todoInstance, SLOT(updateUI()));
                          connect(checkBox, &QCheckBox::stateChanged, [head](int state) {
@@ -214,12 +217,12 @@ public:
                  if (head->priority == j) {
                      if (head->status == false) {
                          QListWidgetItem* item = new QListWidgetItem(incompleteTasks);
-                         item->setText("    " + QString::fromStdString(head->value));
+                         item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + QString::number(head->priority));
 
                          QCheckBox* checkBox = new QCheckBox(incompleteTasks);
                          checkBox->setChecked(head->status);
                          incompleteTasks->setItemWidget(item, checkBox);
-                         //QObject::connect(checkBox, &QCheckBox::clicked, &todoInstance, &ToDo::updateUI);
+                        
                          QObject::connect(checkBox, &QCheckBox::stateChanged, &todoInstance, &ToDo::updateUI);
                          QObject::connect(checkBox, SIGNAL(clicked()), &todoInstance, SLOT(updateUI()));
                          connect(checkBox, &QCheckBox::stateChanged, [head](int state) {
@@ -231,26 +234,7 @@ public:
              }
          }
      }
-     for (int j = 0; j < 5; j++) {
-         for (int i = 0; i < hashGroups; i++) {
-             LinkedListNode* head = table[i];
-
-             while (head != nullptr) {
-                 if (head->priority == j) {
-                     QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(head->value));
-                     testWidget->addItem(item);
-
-                     QCheckBox* checkBox = new QCheckBox();
-                     checkBox->setChecked(head->status);
-
-                     testWidget->setItemWidget(item, checkBox);
-
-
-                 }
-                 head = head->next;
-             }
-         }
-     }
+     
  }
   
 void deleteItem(string value) {
