@@ -127,17 +127,20 @@ void HashMap::display(QListWidget* allTasks, ToDo& todoInstance, QListWidget* co
 
             while (head != nullptr) {
                 if (head->priority == j) {
+                    QString priorityName;
                     QListWidgetItem* item = new QListWidgetItem(allTasks);
-                    item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + QString::number(head->priority));
-                    if (head->priority == 1) {
-                        item->setForeground(darkerRed);
-                    }
-                    else if (head->priority == 2) {
-                        item->setForeground(red);
-                    }
-                    if (head->status == true) {
-                        item->setForeground(gray);
-                    }
+                    if (head->priority == 1)
+                        priorityName = "Very Low";
+                    else if (head->priority == 2)
+                        priorityName = "Low";
+                    else if (head->priority == 3)
+                        priorityName = "Medium";
+                    else if (head->priority == 4)
+                        priorityName = "High";
+                    else if (head->priority == 5)
+                        priorityName = "Very High";
+                    item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + priorityName);
+                    
                     QCheckBox* checkBox = new QCheckBox(allTasks);
                     checkBox->setChecked(head->status);
                     allTasks->setItemWidget(item, checkBox);
@@ -160,8 +163,18 @@ void HashMap::display(QListWidget* allTasks, ToDo& todoInstance, QListWidget* co
                 if (head->priority == j) {
                     if (head->status == true) {
                         QListWidgetItem* item = new QListWidgetItem(completeTasks);
-                        item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + QString::number(head->priority));
-                        item->setForeground(Qt::gray);
+                        QString priorityName;
+                        if (head->priority == 1)
+                            priorityName = "Very Low";
+                        else if (head->priority == 2)
+                            priorityName = "Low";
+                        else if (head->priority == 3)
+                            priorityName = "Medium";
+                        else if (head->priority == 4)
+                            priorityName = "High";
+                        else if (head->priority == 5)
+                            priorityName = "Very High";
+                        item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + priorityName);
                         QCheckBox* checkBox = new QCheckBox(completeTasks);
                         checkBox->setChecked(head->status);
                         completeTasks->setItemWidget(item, checkBox);
@@ -185,8 +198,19 @@ void HashMap::display(QListWidget* allTasks, ToDo& todoInstance, QListWidget* co
                 if (head->priority == j) {
                     if (head->status == false) {
                         QListWidgetItem* item = new QListWidgetItem(incompleteTasks);
-                        item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + QString::number(head->priority));
-
+                        QString priorityName;
+                        if (head->priority == 1)
+                            priorityName = "Very Low";
+                        else if (head->priority == 2)
+                            priorityName = "Low";
+                        else if (head->priority == 3)
+                            priorityName = "Medium";
+                        else if (head->priority == 4)
+                            priorityName = "High";
+                        else if (head->priority == 5)
+                            priorityName = "Very High";
+                        item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + priorityName);
+ 
                         QCheckBox* checkBox = new QCheckBox(incompleteTasks);
                         checkBox->setChecked(head->status);
                         incompleteTasks->setItemWidget(item, checkBox);
