@@ -1,8 +1,8 @@
 #include "HashMap.h"
-#include "ToDo.h" // Include necessary headers
+#include "ToDo.h" 
 #include <iostream>
 
-// Implement the methods declared in HashMap.h
+
 
 LinkedListNode::LinkedListNode(int p, std::string v) : priority(p), value(v), next(nullptr), status(false) {
     KeyGeneration();
@@ -175,9 +175,11 @@ void HashMap::display(QListWidget* allTasks, ToDo& todoInstance, QListWidget* co
                         else if (head->priority == 5)
                             priorityName = "Very High";
                         item->setText("    " + QString::fromStdString(head->value) + "    Priorty: " + priorityName);
+
                         QCheckBox* checkBox = new QCheckBox(completeTasks);
                         checkBox->setChecked(head->status);
                         completeTasks->setItemWidget(item, checkBox);
+
                         QObject::connect(checkBox, &QCheckBox::stateChanged, &todoInstance, &ToDo::updateUI);
                         QObject::connect(checkBox, SIGNAL(clicked()), &todoInstance, SLOT(updateUI()));
                         connect(checkBox, &QCheckBox::stateChanged, [head](int state) {

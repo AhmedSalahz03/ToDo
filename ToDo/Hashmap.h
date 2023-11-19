@@ -5,10 +5,10 @@
 
 #include <iostream>
 #include <string>
-#include <QObject>
-#include <QListWidget>
-#include <QCheckBox>
-#include <QColor>
+#include <QtCore/QObject>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QCheckBox>
+#include <QtGui/qcolor.h>
 
 class ToDo;
 

@@ -1,13 +1,13 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QListWidget>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 #include "ui_ToDo.h"
+#include <QtWidgets/QListWidget>
+#include <QtCore/QString>
 #include "Task.h"
-#include "qcombobox.h"
+#include <QtWidgets/QComboBox>
 
 
 class HashMap;
@@ -25,11 +25,11 @@ public slots:
     void createTask();
     void updateUI();
     void deleteTask();
+    void searchTask();
   
     
 private:
     
-
     Ui::ToDoClass ui;
     HashMap* tasks;
     QLineEdit* name;
@@ -39,5 +39,7 @@ private:
     QListWidget* allTasks;
     QListWidget* completeTasks;
     QListWidget* incompleteTasks;
+    QLineEdit* searchedTask;
+    QPushButton* searchButton;
     
 };

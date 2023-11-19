@@ -1,13 +1,15 @@
 #include "ToDo.h"
 #include "Hashmap.h"
-#include <QPushButton>
-#include <QLabel>
-#include <qcheckbox.h>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QCheckBox>
 #include "Hashmap.h"
-#include <qcombobox.h>
-#include <QString>
+#include <QtWidgets/QComboBox>
+#include <QtCore/QString>
 #include <string>
-#include <QFile>
+#include <QtCore/QFile>
+#include <qmessagebox.h>
+
 
 ToDo::ToDo(QWidget* parent)
     : QMainWindow(parent), tasks(new HashMap())
@@ -99,6 +101,20 @@ ToDo::ToDo(QWidget* parent)
     priority->addItem("Very High");
     priority->setToolTip("Select the Task's Priority");
     
+    // Search QLineEdit
+    searchedTask = new QLineEdit(this);
+    searchedTask->setPlaceholderText("Search for a Todo");
+    searchedTask->move(100, 200);
+    searchedTask->resize(350, 40);
+    searchedTask->show();
+
+    searchButton = new QPushButton(this);
+    searchButton->setText("Search");
+    searchButton->move(470, 200);
+    searchButton->resize(120, 40);
+    searchButton->setToolTip("Search for a Task");
+    connect(searchButton, SIGNAL(clicked()), this, SLOT(searchTask()));
+
     // Show Button and ComboBox
     doneButton->show();
     priority->show();
@@ -113,18 +129,23 @@ ToDo::ToDo(QWidget* parent)
         incompleteTasks->setStyleSheet(styleSheet);
         doneButton->setStyleSheet(styleSheet);
         deleteBtn->setStyleSheet(styleSheet);
+        searchButton->setStyleSheet(styleSheet);
         styleFile.close();
                 
     }   
+
 }
 
 ToDo::~ToDo()
 {}
 
-
 void ToDo::createTask() {
     int selectedPriority = priority->currentIndex() + 1;
     std::string taskName = name->text().toStdString();
+    if (taskName == "") {
+        QMessageBox::warning(this, "Empty Task", "Add ToDo Field must be Filled");
+        return;
+    }
     tasks->insert(selectedPriority, taskName);
     name->clear();
     updateUI();
@@ -151,8 +172,32 @@ void ToDo::deleteTask() {
     std::string str = value.toStdString();
     tasks->deleteItem(str);
     updateUI();
-    
-    
+       
+}
+
+void ToDo::searchTask() {
+    std::string searchedTaskStr = searchedTask->text().toStdString();
+    std::string returnedSearchValue = tasks->searchItem(searchedTaskStr);
+    if (returnedSearchValue == "") {
+        QMessageBox::warning(this, "Empty Search", "Search Field must be Filled");
+        return;
+    }
+
+    for (int i = 0; i < allTasks->count(); ++i) {
+        QListWidgetItem* currentItem = allTasks->item(i);
+        
+        if (currentItem) {
+            QString itemText = currentItem->text();
+            QStringList list = itemText.split("    Priorty: ");
+            QString value = list[0].trimmed();
+            std::string str = value.toStdString();
+
+            if (str == returnedSearchValue) {
+                allTasks->setCurrentItem(currentItem);
+            }
+        }
+    }
+
     
 }
 
