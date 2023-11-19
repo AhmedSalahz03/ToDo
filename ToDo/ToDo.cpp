@@ -27,8 +27,8 @@ ToDo::ToDo(QWidget* parent)
     // All Tasks Label
     QLabel* allTasksLabel = new QLabel(this);
     allTasksLabel->setText("All Tasks");
-    allTasksLabel->resize(150, 20);
-    allTasksLabel->move(100, 270);
+    allTasksLabel->resize(150, 23);
+    allTasksLabel->move(100, 268);
     QFont font = allTasksLabel->font();
     font.setPointSize(15);
     font.setBold(true);
@@ -36,8 +36,8 @@ ToDo::ToDo(QWidget* parent)
     // Complete Tasks Label
     QLabel* completeTasksLabel = new QLabel(this);
     completeTasksLabel->setText("Complete Tasks");
-    completeTasksLabel->resize(250, 20);
-    completeTasksLabel->move(800, 270);
+    completeTasksLabel->resize(250, 23);
+    completeTasksLabel->move(800, 268);
     font = completeTasksLabel->font();
     font.setPointSize(15);
     font.setBold(true);
@@ -45,8 +45,8 @@ ToDo::ToDo(QWidget* parent)
     // Incomplete Tasks Label
     QLabel* incompleteTasksLabel = new QLabel(this);
     incompleteTasksLabel->setText("Incomplete Tasks");
-    incompleteTasksLabel->resize(250,20);
-    incompleteTasksLabel->move(450, 270);
+    incompleteTasksLabel->resize(250,23);
+    incompleteTasksLabel->move(450, 268);
     font = incompleteTasksLabel->font();
     font.setPointSize(15);
     font.setBold(true);
@@ -76,6 +76,7 @@ ToDo::ToDo(QWidget* parent)
     connect(deleteBtn, &QPushButton::clicked, [=]() {
         deleteTask();
         });
+    
     // Add a ToDo Line Edit
     name = new QLineEdit(this);
     name->setPlaceholderText("Add a Todo");
@@ -146,6 +147,10 @@ void ToDo::createTask() {
         QMessageBox::warning(this, "Empty Task", "Add ToDo Field must be Filled");
         return;
     }
+    if (selectedPriority < 1) {
+        QMessageBox::warning(this, "No Priority Selected", "Please select a priority!");
+        return;
+    }
     tasks->insert(selectedPriority, taskName);
     name->clear();
     updateUI();
@@ -197,9 +202,9 @@ void ToDo::searchTask() {
             }
         }
     }
-
-    
+   
 }
+
 
 
 

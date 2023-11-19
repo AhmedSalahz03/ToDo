@@ -26,6 +26,7 @@ public slots:
     void updateUI();
     void deleteTask();
     void searchTask();
+    
   
     
 private:
@@ -41,5 +42,6 @@ private:
     QListWidget* incompleteTasks;
     QLineEdit* searchedTask;
     QPushButton* searchButton;
+    
     
 };
