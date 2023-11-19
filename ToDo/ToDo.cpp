@@ -108,7 +108,7 @@ ToDo::ToDo(QWidget* parent)
     searchedTask->move(100, 200);
     searchedTask->resize(350, 40);
     searchedTask->show();
-
+    // Search Button
     searchButton = new QPushButton(this);
     searchButton->setText("Search");
     searchButton->move(470, 200);
@@ -182,9 +182,13 @@ void ToDo::deleteTask() {
 
 void ToDo::searchTask() {
     std::string searchedTaskStr = searchedTask->text().toStdString();
+    if (searchedTask->text() == "") {
+        QMessageBox::warning(this, "Empty Field", "Search Field is Empty");
+        return;
+    }
     std::string returnedSearchValue = tasks->searchItem(searchedTaskStr);
     if (returnedSearchValue == "") {
-        QMessageBox::warning(this, "Empty Search", "Search Field must be Filled");
+        QMessageBox::warning(this, "Not Found", "Task not found");
         return;
     }
 
@@ -199,9 +203,12 @@ void ToDo::searchTask() {
 
             if (str == returnedSearchValue) {
                 allTasks->setCurrentItem(currentItem);
+                return;
             }
         }
     }
+    
+    return;
    
 }
 
