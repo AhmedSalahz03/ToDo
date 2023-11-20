@@ -83,6 +83,7 @@ ToDo::ToDo(QWidget* parent)
     name->move(100, 100);
     name->resize(350, 40);
     name->show();
+    connect(name, SIGNAL(returnPressed()), this, SLOT(createTask()));
     // Add Task Button
     doneButton = new QPushButton(this);
     doneButton->setText("Add Task");
@@ -108,6 +109,7 @@ ToDo::ToDo(QWidget* parent)
     searchedTask->move(100, 200);
     searchedTask->resize(350, 40);
     searchedTask->show();
+    connect(searchedTask, SIGNAL(returnPressed()), this, SLOT(searchTask()));
     // Search Button
     searchButton = new QPushButton(this);
     searchButton->setText("Search");
